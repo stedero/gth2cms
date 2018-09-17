@@ -2,7 +2,7 @@ package xlate
 
 import (
 	"log"
-
+	"strings"
 	"github.com/tealeg/xlsx"
 )
 
