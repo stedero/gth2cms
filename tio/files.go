@@ -6,14 +6,14 @@ import (
 	"os"
 )
 
-// TnsXML info struct.
-type TnsXML struct {
+// GthXML info struct.
+type GthXML struct {
 	FileName string
 	Data     []byte
 }
 
-// TnsReader for copying a file while reading
-type TnsReader struct {
+// GthReader for copying a file while reading
+type GthReader struct {
 	reader    io.ReadCloser
 	writer    io.WriteCloser
 	teeReader io.Reader
@@ -40,15 +40,15 @@ func CreateDirIfNotExist(dir string) bool {
 	return false
 }
 
-// NewTnsReader creates a reader that copies the output when reading.
-func NewTnsReader(inputFilename, outputFilename string) *TnsReader {
+// NewGthReader creates a reader that copies the output when reading.
+func NewGthReader(inputFilename, outputFilename string) *GthReader {
 	reader := OpenFile(inputFilename)
 	writer := CreateFile(outputFilename)
 	teeReader := io.TeeReader(reader, writer)
-	return &TnsReader{reader, writer, teeReader}
+	return &GthReader{reader, writer, teeReader}
 }
 
-func (tr *TnsReader) Read(p []byte) (n int, err error) {
+func (tr *GthReader) Read(p []byte) (n int, err error) {
 	return tr.teeReader.Read(p)
 }
 
@@ -73,7 +73,7 @@ func CreateFile(filename string) io.WriteCloser {
 }
 
 // Close closes the TNS reader.
-func (tr *TnsReader) Close() {
+func (tr *GthReader) Close() {
 	tr.reader.Close()
 	tr.writer.Close()
 }

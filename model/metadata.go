@@ -26,12 +26,12 @@ type Entry struct {
 const multiValueJoiner = ","
 const metaNameSpace = "ibfd:"
 
-// NewMetaData transforms a TNS article into a meta data structure.
-func NewMetaData(tnsArticle *TnsArticle) *MetaData {
+// NewMetaData transforms a Country Chapter into a meta data structure.
+func NewMetaData(gthChapter *GthChapter) *MetaData {
 	metaData := &MetaData{}
 	// metaData.add("type", "cm:content")
 	// metaData.add("id", tnsArticle.GUID)
-	metaData.add("date", tnsArticle.TnsArticleInfo.ArticleDate.IsoDate)
+	metaData.add("date", gthChapter.TnsArticleInfo.ArticleDate.IsoDate)
 	// metaData.add("report_type", tnsArticle.ReportType)
 	// metaData.add("collection", tnsArticle.Collection)
 	// metaData.add("title", tnsArticle.TnsArticleInfo.OnlinetTitle)
@@ -72,19 +72,19 @@ func mapJoin(len int, get func(int) string) string {
 	return strings.Join(result, multiValueJoiner)
 }
 
-func countryCode(tnsArticle *TnsArticle) (int, func(int) string) {
+func countryCode(tnsArticle *GthChapter) (int, func(int) string) {
 	return len(tnsArticle.TnsArticleInfo.CountryList.Countries), func(i int) string {
 		return tnsArticle.TnsArticleInfo.CountryList.Countries[i].CC
 	}
 }
 
-func countryName(tnsArticle *TnsArticle) (int, func(int) string) {
+func countryName(tnsArticle *GthChapter) (int, func(int) string) {
 	return len(tnsArticle.TnsArticleInfo.CountryList.Countries), func(i int) string {
 		return strings.Replace(tnsArticle.TnsArticleInfo.CountryList.Countries[i].Name, multiValueJoiner, " ", -1)
 	}
 }
 
-func reference(tnsArticle *TnsArticle) (int, func(int) string) {
+func reference(tnsArticle *GthChapter) (int, func(int) string) {
 	return len(tnsArticle.TnsArticleInfo.Reference), func(i int) string {
 		return tnsArticle.TnsArticleInfo.Reference[i].Target
 	}

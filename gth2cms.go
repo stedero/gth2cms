@@ -1,17 +1,17 @@
-// tns2cms adds metadata to TNS articles for bulkload in the Alfresco CMS.
-// Every TNS article is stored in a separate XML file.
-// Metadata is created by extracting and converting data from a TNS article
+// gth2cms adds metadata to Country Chapters for bulkload in the Alfresco CMS.
+// Every Country Chapter is stored in a separate XML file.
+// Metadata is created by extracting and converting data from a Country Chapter
 // and store that in a separate XML file that complies with the JAVA properties
 // file DTD (http://java.sun.com/dtd/properties.dtd).
 package main
 
 import (
-	"ibfd.org/tns2cms/cmd"
-	"ibfd.org/tns2cms/exec"
-	"ibfd.org/tns2cms/model"
-	"ibfd.org/tns2cms/paths"
-	"ibfd.org/tns2cms/stats"
-	"ibfd.org/tns2cms/tio"
+	"ibfd.org/gth2cms/cmd"
+	"ibfd.org/gth2cms/exec"
+	"ibfd.org/gth2cms/model"
+	"ibfd.org/gth2cms/paths"
+	"ibfd.org/gth2cms/stats"
+	"ibfd.org/gth2cms/tio"
 )
 
 func main() {
@@ -23,10 +23,10 @@ func main() {
 }
 
 func process(fileNamer *paths.Filenamer) {
-	tnsReader := tio.NewTnsReader(fileNamer.InputFilename(), fileNamer.OutputFilename())
-	defer tnsReader.Close()
-	tnsArticle := model.ReadTnsArticle(tnsReader)
-	metaData := model.NewMetaData(tnsArticle)
+	gthReader := tio.NewGthReader(fileNamer.InputFilename(), fileNamer.OutputFilename())
+	defer gthReader.Close()
+	gthChapter := model.ReadGthChapter(gthReader)
+	metaData := model.NewMetaData(gthChapter)
 	metaFile := tio.CreateFile(fileNamer.MetaFilename())
 	defer metaFile.Close()
 	metaData.WriteXML(metaFile)

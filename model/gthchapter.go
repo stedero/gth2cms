@@ -6,9 +6,9 @@ import (
 	"log"
 )
 
-// TnsArticle defines the XML structure of a
-// Tax News Service article.
-type TnsArticle struct {
+// GthChapter defines the XML structure of a
+// Country Chapter.
+type GthChapter struct {
 	GUID           string `xml:"guid,attr"`
 	Collection     string `xml:"collection,attr"`
 	ReportType     string `xml:"reporttype,attr"`
@@ -44,23 +44,23 @@ type TnsArticle struct {
 	} `xml:"tnsarticleinfo"`
 }
 
-// ReadTnsArticle transforms a TNS article in XML into an internal structure.
-func ReadTnsArticle(r io.Reader) *TnsArticle {
-	var tnsArticle TnsArticle
+// ReadGthChapter transforms a TNS article in XML into an internal structure.
+func ReadGthChapter(r io.Reader) *GthChapter {
+	var gthChapter GthChapter
 	decoder := xml.NewDecoder(r)
-	err := decoder.Decode(&tnsArticle)
+	err := decoder.Decode(&gthChapter)
 	if err != nil {
 		log.Fatalf("error unmarshaling TNS article: %v", err)
 	}
-	tnsArticle.addDTDDefaults()
-	return &tnsArticle
+	gthChapter.addDTDDefaults()
+	return &gthChapter
 }
 
-func (tnsArticle *TnsArticle) addDTDDefaults() {
-	if tnsArticle.Collection == "" {
-		tnsArticle.Collection = "tns"
+func (gthChapter *GthChapter) addDTDDefaults() {
+	if gthChapter.Collection == "" {
+		gthChapter.Collection = "tns"
 	}
-	if tnsArticle.ReportType == "" {
-		tnsArticle.ReportType = "standard"
+	if gthChapter.ReportType == "" {
+		gthChapter.ReportType = "standard"
 	}
 }
