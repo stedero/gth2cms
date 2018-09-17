@@ -11,6 +11,17 @@ type Mapper struct {
 	data map[string][]string
 }
 
+type column int
+
+const (
+	collectionCode column = iota
+	collectionName
+	countryName
+	authors
+	tte
+	regionOrTeam
+)
+
 // NewMapper creates a mapper.
 func NewMapper(filename string) *Mapper {
 	data := make(map[string][]string)
@@ -24,7 +35,7 @@ func NewMapper(filename string) *Mapper {
 		for _, cell := range row.Cells {
 			record = append(record, strings.TrimSpace(cell.String()))
 		}
-		data[record[0]] = record
+		data[record[collectionCode]] = record
 	}
 	return &Mapper{data}
 }
@@ -33,7 +44,7 @@ func NewMapper(filename string) *Mapper {
 func (mapper *Mapper) HumanCollection(key string) string {
 	data := mapper.get(key)
 	if data != nil {
-		return data[1]
+		return data[collectionName]
 	} else {
 		return ""
 	}
@@ -43,7 +54,7 @@ func (mapper *Mapper) HumanCollection(key string) string {
 func (mapper *Mapper) HumanTitle(key string) string {
 	data := mapper.get(key)
 	if data != nil {
-		return data[2] + " - " + data[1] 
+		return data[countryName] + " - " + data[collectionCode] 
 	} else {
 		return ""
 	}
@@ -53,17 +64,27 @@ func (mapper *Mapper) HumanTitle(key string) string {
 func (mapper *Mapper) RegionOrTeam(key string) string {
 	data := mapper.get(key)
 	if data != nil {
-		return data[5]
+		return data[regionOrTeam]
 	} else {
 		return ""
 	}
 }
 
-// Authors returns a lits of authors.
+// Authors returns a list of authors.
 func (mapper *Mapper) Authors(key string) string {
 	data := mapper.get(key)
 	if data != nil {
-		return data[4] 
+		return data[authors] 
+	} else {
+		return ""
+	}
+}
+
+// TTE returns TTE values.
+func (mapper *Mapper) TTE(key string) string {
+	data := mapper.get(key)
+	if data != nil {
+		return data[tte] 
 	} else {
 		return ""
 	}
