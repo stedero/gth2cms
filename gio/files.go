@@ -1,4 +1,4 @@
-package tio
+package gio
 
 import (
 	"io"
@@ -19,11 +19,22 @@ type GthReader struct {
 	teeReader io.Reader
 }
 
-// IsExistingDirectory determines whether a given directory
-// is an existing directory.
-func IsExistingDirectory(dir string) bool {
-	file, err := os.Stat(dir)
+// IsExistingDirectory determines whether a given name
+// defines an existing directory.
+func IsExistingDirectory(name string) bool {
+	file, err := os.Stat(name)
 	return err == nil && file.IsDir()
+}
+
+// IsExistingFile determines whether a given name
+// defines an existing file.
+func IsExistingFile(name string) bool {
+	if _, err := os.Stat(name); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
 }
 
 // CreateDirIfNotExist creates a directory if it does not

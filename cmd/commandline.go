@@ -5,32 +5,38 @@ import (
 	"fmt"
 	"os"
 
+	"ibfd.org/gth2cms/gio"
 	"ibfd.org/gth2cms/paths"
-	"ibfd.org/gth2cms/tio"
+	"ibfd.org/gth2cms/xlate"
 )
 
-// ParseCommandLine extracts flags and directory names from the command line.
-func ParseCommandLine() (bool, *paths.DirectoryNamer) {
+// ParseCommandLine extracts flags, Excel mapping filename and
+// directory names from the command line.
+func ParseCommandLine() (bool, *xlate.Mapper, *paths.DirectoryNamer) {
 	var verbose bool
 	flag.Usage = usage
 	flag.BoolVar(&verbose, "v", false, "verbose output")
 	flag.Parse()
-	if flag.NArg() != 2 {
+	if flag.NArg() != 3 {
 		flag.Usage()
 	} else {
-		indir, outdir := flag.Arg(0), flag.Arg(1)
-		if !tio.IsExistingDirectory(indir) {
+		mappingFile, indir, outdir := flag.Arg(0), flag.Arg(1), flag.Arg(2)
+		if !gio.IsExistingFile(mappingFile) {
+			fmt.Printf("%s not found\n", mappingFile)
+			exit()
+		}
+		if !gio.IsExistingDirectory(indir) {
 			fmt.Printf("%s is not an existing directory\n", indir)
 			exit()
 		}
-		return verbose, paths.NewDirectoryNamer(indir, outdir)
+		return verbose, xlate.NewMapper(mappingFile), paths.NewDirectoryNamer(indir, outdir)
 	}
-	return false, nil
+	return false, nil, nil
 }
 
 func usage() {
 	fmt.Printf("Usage of %s:\n", os.Args[0])
-	fmt.Printf("\t%s [-v] <input directory> <output directory>\n", os.Args[0])
+	fmt.Printf("\t%s [-v] <Excel mappings file> <input directory> <output directory>\n", os.Args[0])
 	flag.PrintDefaults()
 	exit()
 }

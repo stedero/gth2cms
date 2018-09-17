@@ -11,23 +11,24 @@ import (
 	"ibfd.org/gth2cms/model"
 	"ibfd.org/gth2cms/paths"
 	"ibfd.org/gth2cms/stats"
-	"ibfd.org/gth2cms/tio"
+	"ibfd.org/gth2cms/gio"
+	"ibfd.org/gth2cms/xlate"
 )
 
 func main() {
-	verbose, directoryNamer := cmd.ParseCommandLine()
+	verbose, mapper, directoryNamer := cmd.ParseCommandLine()
 	reporter := stats.NewReporter(verbose)
-	visitor := exec.NewVisitor(directoryNamer, process, reporter)
+	visitor := exec.NewVisitor(mapper, directoryNamer, process, reporter)
 	visitor.Walk()
 	reporter.End()
 }
 
-func process(fileNamer *paths.Filenamer) {
-	gthReader := tio.NewGthReader(fileNamer.InputFilename(), fileNamer.OutputFilename())
+func process(mapper *xlate.Mapper, fileNamer *paths.Filenamer) {
+	gthReader := gio.NewGthReader(fileNamer.InputFilename(), fileNamer.OutputFilename())
 	defer gthReader.Close()
 	gthChapter := model.ReadGthChapter(gthReader)
-	metaData := model.NewMetaData(gthChapter)
-	metaFile := tio.CreateFile(fileNamer.MetaFilename())
+	metaData := model.NewMetaData(mapper, gthChapter)
+	metaFile := gio.CreateFile(fileNamer.MetaFilename())
 	defer metaFile.Close()
 	metaData.WriteXML(metaFile)
 }
