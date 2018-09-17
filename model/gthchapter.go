@@ -14,9 +14,6 @@ type GthChapter struct {
 	ReviewDate struct {
 		Date string `xml:"reviewdate,attr"`
 	} `xml:"chaphead>latestinfo>reviewdate"`
-	Country struct {
-		CC string `xml:",attr"`
-	} `xml:"chaphead>country"`
 }
 
 // ReadGthChapter transforms a Country Chapter in XML into an internal structure.
