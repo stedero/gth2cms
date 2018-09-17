@@ -28,6 +28,8 @@ func (reporter *Reporter) Register(action paths.Action, path string) {
 	reporter.actionCounts[action]++
 	if reporter.verbose {
 		switch action {
+		case paths.AcceptFile:
+			log.Printf("processed file: %s\n", path)
 		case paths.RejectDir:
 			log.Printf("skipped directory: %s\n", path)
 		case paths.RejectFile:

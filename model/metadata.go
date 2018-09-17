@@ -30,13 +30,14 @@ const multiValueJoiner = ","
 // NewMetaData transforms a Country Chapter into a meta data structure.
 func NewMetaData(mapper *xlate.Mapper, gthChapter *GthChapter) *MetaData {
 	col := gthChapter.Collection
+	key := gthChapter.Anchor
 	metaData := &MetaData{}
 	metaData.add("type", "ibfd:onlinecontent")
 	metaData.add("aspects", "ibfd:countryChapter,ibfd:onlineContentProperties,cm:titled")
-	metaData.add("cm:title", mapper.HumanTitle(col))
+	metaData.add("cm:title", mapper.HumanTitle(key))
 	metaData.add("ibfd:collectionCode", col)
-	metaData.add("ibfd:collectionCodeHumanReadable", mapper.HumanCollection(col))
-	metaData.add("ibfd:regionOrTeam", mapper.RegionOrTeam(col))
+	metaData.add("ibfd:collectionCodeHumanReadable", mapper.HumanCollection(key))
+	metaData.add("ibfd:regionOrTeam", mapper.RegionOrTeam(key))
 	metaData.add("ibfd:lastReviewDate", gthChapter.ReviewDate.Date+"T00:00:00.000+02:00")
 	return metaData
 }
