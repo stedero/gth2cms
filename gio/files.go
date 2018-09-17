@@ -83,7 +83,7 @@ func CreateFile(filename string) io.WriteCloser {
 	return file
 }
 
-// Close closes the TNS reader.
+// Close closes the GTH reader.
 func (tr *GthReader) Close() {
 	tr.reader.Close()
 	tr.writer.Close()

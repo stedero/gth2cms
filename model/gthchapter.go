@@ -19,7 +19,7 @@ func ReadGthChapter(r io.Reader) *GthChapter {
 	decoder := xml.NewDecoder(r)
 	err := decoder.Decode(&gthChapter)
 	if err != nil {
-		log.Fatalf("error unmarshaling TNS article: %v", err)
+		log.Fatalf("error unmarshaling Country Chapter: %v", err)
 	}
 	return &gthChapter
 }
