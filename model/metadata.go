@@ -7,6 +7,7 @@ import (
 	"log"
 	"strings"
 	"time"
+
 	"ibfd.org/gth2cms/xlate"
 )
 
@@ -36,7 +37,7 @@ func NewMetaData(mapper *xlate.Mapper, gthChapter *GthChapter) *MetaData {
 	metaData.add("ibfd:collectionCode", col)
 	metaData.add("ibfd:collectionCodeHumanReadable", mapper.HumanCollection(col))
 	metaData.add("ibfd:regionOrTeam", mapper.RegionOrTeam(col))
-	metaData.add("ibfd:lastReviewDate", gthChapter.ReviewDate + "T00:00:00.000+02:00")
+	metaData.add("ibfd:lastReviewDate", gthChapter.ReviewDate.Date+"T00:00:00.000+02:00")
 	return metaData
 }
 

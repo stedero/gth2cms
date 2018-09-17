@@ -10,7 +10,9 @@ import (
 // Country Chapter.
 type GthChapter struct {
 	Collection string `xml:"collection,attr"`
-	ReviewDate string `xml:"chaphead>latestinfo>reviewdate>reviewdate,attr"`
+	ReviewDate struct {
+		Date string `xml:"reviewdate,attr"`
+	} `xml:"chaphead>latestinfo>reviewdate"`
 }
 
 // ReadGthChapter transforms a Country Chapter in XML into an internal structure.
