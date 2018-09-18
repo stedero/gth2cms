@@ -3,6 +3,7 @@ package xlate
 import (
 	"log"
 	"strings"
+
 	"github.com/tealeg/xlsx"
 )
 
@@ -13,13 +14,14 @@ type Mapper struct {
 
 type column int
 
+// Excel column references. First letter is the column.
 const (
-	collectionCode column = iota
-	collectionName
-	countryName
-	authors
-	tte
-	regionOrTeam
+	AcollectionCode column = iota
+	BcollectionName
+	CcountryName
+	Dauthors
+	Ette
+	FregionOrTeam
 )
 
 // NewMapper creates a mapper.
@@ -35,66 +37,32 @@ func NewMapper(filename string) *Mapper {
 		for _, cell := range row.Cells {
 			record = append(record, strings.TrimSpace(cell.String()))
 		}
-		data[record[collectionCode]] = record
+		data[record[AcollectionCode]] = record
 	}
 	return &Mapper{data}
 }
 
 // HumanCollection returns the collection code in a human friendly format.
 func (mapper *Mapper) HumanCollection(key string) string {
-	data := mapper.get(key)
-	if data != nil {
-		return data[collectionName]
-	} else {
-		return ""
-	}
+	return mapper.data[key][BcollectionName]
 }
 
 // HumanTitle returns the document title in a human friendly format.
 func (mapper *Mapper) HumanTitle(key string) string {
-	data := mapper.get(key)
-	if data != nil {
-		return data[countryName] + " - " + data[collectionCode] 
-	} else {
-		return ""
-	}
+	return mapper.data[key][CcountryName] + " - " + mapper.data[key][AcollectionCode]
 }
 
 // RegionOrTeam returns a region or team.
 func (mapper *Mapper) RegionOrTeam(key string) string {
-	data := mapper.get(key)
-	if data != nil {
-		return data[regionOrTeam]
-	} else {
-		return ""
-	}
+	return mapper.data[key][FregionOrTeam]
 }
 
-// Authors returns a list of authors.
+// Authors returns a list of authors separated by semicolons.
 func (mapper *Mapper) Authors(key string) string {
-	data := mapper.get(key)
-	if data != nil {
-		return data[authors] 
-	} else {
-		return ""
-	}
+	return mapper.data[key][Dauthors]
 }
 
 // TTE returns TTE values.
 func (mapper *Mapper) TTE(key string) string {
-	data := mapper.get(key)
-	if data != nil {
-		return data[tte] 
-	} else {
-		return ""
-	}
-}
-
-func (mapper *Mapper) get(key string) []string {
-	if data, ok := mapper.data[key]; ok {
-		return data
-	} else {
-		log.Printf("No entry for: %s\n", key)
-		return data
-	}
+	return mapper.data[key][Ette]
 }
