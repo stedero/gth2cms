@@ -22,7 +22,7 @@ type MetaData struct {
 // Entry element for marshaling to XML
 type Entry struct {
 	Key   string `xml:"key,attr"`
-	Value string `xml:",innerxml"`
+	Value string `xml:",chardata"`
 }
 
 const multiValueJoiner = ","
