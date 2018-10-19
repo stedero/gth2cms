@@ -16,7 +16,7 @@ type column int
 
 // Excel column references. First letter is the column.
 const (
-	AcollectionCode column = iota
+	Auid column = iota
 	BcollectionName
 	CcountryName
 	Dauthors
@@ -37,7 +37,7 @@ func NewMapper(filename string) *Mapper {
 		for _, cell := range row.Cells {
 			record = append(record, strings.TrimSpace(cell.String()))
 		}
-		data[record[AcollectionCode]] = record
+		data[record[Auid]] = record
 	}
 	return &Mapper{data}
 }
@@ -49,7 +49,7 @@ func (mapper *Mapper) HumanCollection(key string) string {
 
 // HumanTitle returns the document title in a human friendly format.
 func (mapper *Mapper) HumanTitle(key string) string {
-	return mapper.data[key][CcountryName] + " - " + mapper.data[key][AcollectionCode]
+	return mapper.data[key][CcountryName] + " - " + mapper.data[key][BcollectionName]
 }
 
 // RegionOrTeam returns a region or team.
