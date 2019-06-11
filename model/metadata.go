@@ -29,17 +29,16 @@ const multiValueJoiner = ","
 
 // NewMetaData transforms a Country Chapter into a meta data structure.
 func NewMetaData(mapper *xlate.Mapper, gthChapter *GthChapter) *MetaData {
-	col := gthChapter.Collection
-	key := gthChapter.Anchor
+	fetcher := mapper.Fetcher(gthChapter.Anchor)
 	metaData := &MetaData{}
 	metaData.add("type", "ibfd:onlinecontent")
 	metaData.add("aspects", "ibfd:onlineContentProperties,ibfd:assignedUsers,ibfd:countryChapter,cm:titled")
-	metaData.add("cm:title", mapper.HumanTitle(key))
-	metaData.add("ibfd:collectionCode", col)
-	metaData.add("ibfd:collectionCodeHumanReadable", mapper.HumanCollection(key))
-	metaData.add("ibfd:assignedTTEs", mapper.TTE(key))
-	metaData.add("ibfd:assignedAuthors", mapper.Authors(key))
-	metaData.add("ibfd:regionOrTeam", mapper.RegionOrTeam(key))
+	metaData.add("cm:title", fetcher.HumanTitle())
+	metaData.add("ibfd:collectionCode", gthChapter.Collection)
+	metaData.add("ibfd:collectionCodeHumanReadable", fetcher.HumanCollection())
+	metaData.add("ibfd:assignedTTEs", fetcher.TTE())
+	metaData.add("ibfd:assignedAuthors", fetcher.Authors())
+	metaData.add("ibfd:regionOrTeam", fetcher.RegionOrTeam())
 	metaData.add("ibfd:lastReviewDate", gthChapter.ReviewDate.Date+"T00:00:00.000+02:00")
 	return metaData
 }

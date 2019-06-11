@@ -5,7 +5,7 @@ gth2cms adds metadata to Country Chapters for bulkload in the Alfresco CMS.
 
 ```
 Usage of gth2cms:
-        gth2cms [-v] <input directory> <output directory>
+        gth2cms [-v] <Excel mappings file> <input directory> <output directory>
   -v    verbose output
 ```
 
