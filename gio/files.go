@@ -51,7 +51,7 @@ func CreateDirIfNotExist(dir string) bool {
 	return false
 }
 
-// NewGthReader creates a reader that copies the output when reading.
+// NewGthReader creates a reader that copies the input when reading.
 func NewGthReader(inputFilename, outputFilename string) *GthReader {
 	reader := OpenFile(inputFilename)
 	writer := CreateFile(outputFilename)
